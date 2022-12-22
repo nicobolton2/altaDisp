@@ -18,11 +18,13 @@
         <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
           <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
             <h2 class="pt-5 lh-1 fw-bold">Clima</h2>
-            <h3 class="pt-5 mb-4 display-6 lh-1 fw-bold"><div id = "idtemp"></div></h3>
+            <center>
+            <h1 class="pt-5 mb-4 display-6 lh-1 fw-bold"><div id = "idtemp"></div></h1>
+            </center>
             <ul class="d-flex list-unstyled mt-auto">
               <li class="d-flex align-items-center">
                 <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>Hoy</small>
+                <h4>hora Actual:</h4><h3 id="time"></h3>
               </li>
             </ul>
           </div>
@@ -35,11 +37,11 @@
         <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
           <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
             <h2 class="pt-5 lh-1 fw-bold">Valor UF</h2>
-            <h4 class="pt-5 mb-4 display-6 lh-1 fw-bold text-primary">El valor de la unidad de fomento es de </h4> <div id = "iduf"></div>
+            <h4 class="pt-5 mb-4 display-6 lh-1 fw-bold text-primary">El valor de la unidad de fomento es de </h4> <h3><div id = "iduf"></div></h3>
             <ul class="d-flex list-unstyled mt-auto">
               <li class="d-flex align-items-center">
                 <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>Hoy</small>
+                <p id="time"></p>
               </li>
             </ul>
           </div>
@@ -48,13 +50,13 @@
       <div class="col">
         <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
           <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-            <h2 class="pt-5 lh-1 fw-bold">Valor Dolar (USD)</h2>
-            <h3 class="pt-5 mb-4 display-6 lh-1 fw-bold text-success">El valor del dolar es</h3> <div id = "iddollar"></div>
+            <h2 class="pt-5 lh-1 fw-bold">Valor Dolar</h2>
+            <h3 class="pt-5 mb-4 display-6 lh-1 fw-bold text-success">1 USD a CLP</h3> <h3><div id = "iddollar"></div></h3>
             
             <ul class="d-flex list-unstyled mt-auto">
               <li class="d-flex align-items-center">
                 <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>Hoy</small>
+                <p id="time"></p>
               </li>
             </ul>
           </div>
@@ -64,12 +66,18 @@
         <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
           <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
             <h2 class="pt-5 lh-1 fw-bold">Crucigramas</h2>
-            <h3 class="pt-5 mb-4 display-6 lh-1 fw-bold"> <div id = "idgame"></div></h3>
+            
+            
+            
+              <h3 class="pt-5 mb-4 display-6 lh-1 fw-bold" id = "idgame"></h3>
+            
+          
+
             <p id="crusigram"></p>
             <ul class="d-flex list-unstyled mt-auto">
               <li class="d-flex align-items-center">
                 <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
-                <small>Hoy</small>
+                <p id="time"></p>
               </li>
             </ul>
           </div>
@@ -99,7 +107,7 @@
   .then(data => {
     console.log(data);
     // aquí puedes procesar la respuesta del servidor y actualizar el texto de la etiqueta con el id "udefomento"
-    document.getElementById('idtemp').innerHTML = `${data.temp}`;
+    document.getElementById('idtemp').innerHTML = `${data.temp}°C` ;
   });
   
 </script> 
@@ -143,7 +151,7 @@
   .then(data => {
     console.log(data);
     // aquí puedes procesar la respuesta del servidor y actualizar el texto de la etiqueta con el id "udefomento"
-    document.getElementById('iddollar').innerHTML = `${data.dollar}`;
+    document.getElementById('iddollar').innerHTML = `$ ${data.dollar} CLP`;
   });
   
 </script> 
@@ -168,6 +176,39 @@
   });
   
 </script> 
+
+
+<script>
+  // Función que obtiene la hora actual en Chile
+  function getTime() {
+    // Obtenemos la fecha y hora actual
+    const now = new Date();
+    // Calculamos la diferencia en horas entre Chile y la zona horaria UTC
+    const offset = -3;
+    // Ajustamos la hora actual a la zona horaria de Chile
+    const time = new Date(now.getTime() + offset * 3600 * 1000);
+    // Devolvemos la hora en formato HH:MM:SS
+    return time.toISOString().substr(11, 8);
+  }
+  // Función que actualiza la hora cada segundo
+  function updateTime() {
+    // Obtenemos la hora actual
+    const time = getTime();
+    // Mostramos la hora en el elemento con el ID "time"
+    document.getElementById("time").innerHTML = time;
+  }
+  // Ejecutamos la función updateTime cada segundo
+  setInterval(updateTime, 1000);
+</script>
+
+
+
+
+
+
+
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
