@@ -10,10 +10,6 @@ import buffer_pb2_grpc
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/', methods=['GET'])
-def ruta_inicial():
-    return "Ruta inicial"
-
 @app.route('/temperature', methods=['GET'])
 def get_temperature():
     if request.method == 'GET':

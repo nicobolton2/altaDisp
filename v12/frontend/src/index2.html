@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clash Royale</title>
+</head>
+<body>
+  
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ------->
+
+ <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+ <link rel="stylesheet" href="css/gallery.css" media="screen">
+<script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+ <div class="container">
+  <img src="card-png/barbarians.png" alt="archers" class="img-rounded">
+  <form>
+
+
+    <div class="form-group">
+      <label for="nickname">Nickname</label>
+      <input type="text" class="form-control" id="nickname" placeholder="nickname">
+    </div>
+
+    <div class="form-group">
+      <label for="resena">Escriba su comentario</label>
+      <textarea class="container"class="form-control" id="comment" rows="3"></textarea>
+    </div>
+    <button class="w-100 mb-4 btn btn-lg rounded-3 btn-primary" type="submit" onclick="LoadComment()">Subir comentario</button>
+    <!--button class="w-100 mb-2 btn btn-lg rounded-3 btn btn-outline-dark" type="submit" onclick="LoadUpgrade()">Editar comentario</button>-->
+
+    
+  </form>
+  <div class="container">
+    <div class="row">
+      <div class="col" id="idtable" ></div>
+    </div>
+  </div>
+  
+</div>
+<script src="js/gallery.js"></script>
+
+
+<script>
+  async function LoadComment(){
+    let nickname = document.getElementById("nickname");
+    let comment = document.getElementById("comment");
+    console.log(nickname.value);
+    console.log(comment.value);
+    fetch('http://localhost:3000/writecommit', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user: nickname.value,
+        id_carta:7,
+        commit: comment.value
+      }),
+    })
+  }
+
+  async function show(){
+    fetch('http://localhost:3000/commit2', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id_carta: 7
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {console.log(data)
+    //if(data.length > 0){
+
+      var contenedorTabla = document.getElementById("idtable");
+      contenedorTabla.innerHTML = "";
+      var tabla = "<table class='table table-hover table-dark'>";
+      tabla += "<tr><th>#</th><th>Usuario</th><th>Comentario</th><th></th><th></th></tr>"
+      var numero = 0;
+      for (let tarea of data) {
+        //guardar el id de comentario, guardar de alguna forma el loadEditar y ver por que chucha no funciona
+        numero += 1 
+        tabla += "<tr> <td id='id_comentario";
+        tabla += tarea.id_comentario;
+        tabla += "'>";
+
+        tabla += tarea.id_comentario;
+
+        tabla += "</td><td>"; 
+
+        tabla += tarea.usuario;
+
+        tabla += "</td><td>"; 
+
+        tabla += tarea.comentario;
+
+        tabla += "</td><td onclick=loadEditar(";
+        tabla += tarea.id_comentario;
+        tabla += ")>"; 
+
+        tabla += "editar";
+
+        tabla += "</td><td onclick=loadBorrar(";
+        tabla += tarea.id_comentario;
+        tabla += ")>"; 
+
+        tabla += "borrar";
+
+        tabla += "</td></tr>"; 
+      } 
+      tabla += "</table>"; 
+      
+      contenedorTabla.innerHTML = tabla;
+      console.log("si esta pasando")
+    
+    //}  
+    })
+  }
+show();
+  async function loadEditar(id_com){
+    let comment = document.getElementById("comment");
+    console.log(comment);
+    fetch('http://localhost:3000/editar', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idcommit: id_com,
+        commit: comment.value
+      }),
+    })
+    location.reload();
+  }  
+  async function loadBorrar(id_com){
+    fetch('http://localhost:3000/borrar', {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        idcommit: id_com,
+      }),
+    })
+    location.reload();
+  }  
+</script>
+
+</body>
+</html>
