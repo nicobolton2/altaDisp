@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package mypackage;
+
+//temperatura
+message Temperature {
+    string id = 1;
+    string temp = 4;
+}
+
+//UF
+message UF {
+    string id = 1;
+    string uf = 2;
+}
+
+//Dolar
+message Dollar {
+    string id = 1;
+    string dollar = 2;
+}
+
+// vacio
+message Empty {
+
+}
+
+// vacio
+message Example {
+    string Example = 1;
+}
+
+// Servicio
+service Servicer {
+    rpc GetTemperature (Empty) returns (Temperature);
+    rpc GetUF (Empty) returns (UF);
+    rpc GetDollar (Empty) returns (Dollar);
+}
