@@ -13,30 +13,36 @@ db = client["db"]
 class DataServer(buffer_pb2_grpc.Servicer):
 
     def GetTemperature(self, request, context):
-        var = {'id': '1', 'temp': '33'}
-        db['temperature'].insert_one(var)
-
-        
         res = db['temperature'].find().sort("_id", -1)[0]
+        i = str(res['id'])
         t = str(res['temp'])
-        var = {'id': '1', 'temp': t}
+        var = {'id': i, 'temp': t}
         res = buffer_pb2.Temperature(**var)
         return res
-    '''
+    
     def GetDollar(self, request, context):
         res = db['dollar'].find().sort("_id", -1)[0]
+        i = str(res['id'])
         d = str(res['dollar'])
-        var = {'id': '1', 'temp': d}
-        res = buffer_pb2.Temperature(**var)
+        var = {'id': i, 'dollar': d}
+        res = buffer_pb2.Dollar(**var)
         return res
     
     def GetUF(self, request, context):
         res = db['uf'].find().sort("_id", -1)[0]
+        i = str(res['id'])
         d = str(res['uf'])
-        var = {'id': '1', 'uf': d}
-        res = buffer_pb2.Temperature(**var)
+        var = {'id': i, 'uf': d}
+        res = buffer_pb2.UF(**var)
         return res
-    '''      
+        
+    def GetGame(self, request, context):
+        res = db['game'].find().sort("_id", -1)[0]
+        i = str(res['id'])
+        g = str(res['game'])
+        var = {'id': i, 'game': g}
+        res = buffer_pb2.Game(**var)
+        return res
     
 def main():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

@@ -30,6 +30,11 @@ class ServicerStub(object):
                 request_serializer=buffer__pb2.Empty.SerializeToString,
                 response_deserializer=buffer__pb2.Dollar.FromString,
                 )
+        self.GetGame = channel.unary_unary(
+                '/mypackage.Servicer/GetGame',
+                request_serializer=buffer__pb2.Empty.SerializeToString,
+                response_deserializer=buffer__pb2.Game.FromString,
+                )
 
 
 class ServicerServicer(object):
@@ -54,6 +59,12 @@ class ServicerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetGame(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ServicerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -71,6 +82,11 @@ def add_ServicerServicer_to_server(servicer, server):
                     servicer.GetDollar,
                     request_deserializer=buffer__pb2.Empty.FromString,
                     response_serializer=buffer__pb2.Dollar.SerializeToString,
+            ),
+            'GetGame': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetGame,
+                    request_deserializer=buffer__pb2.Empty.FromString,
+                    response_serializer=buffer__pb2.Game.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -131,5 +147,22 @@ class Servicer(object):
         return grpc.experimental.unary_unary(request, target, '/mypackage.Servicer/GetDollar',
             buffer__pb2.Empty.SerializeToString,
             buffer__pb2.Dollar.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetGame(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/mypackage.Servicer/GetGame',
+            buffer__pb2.Empty.SerializeToString,
+            buffer__pb2.Game.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

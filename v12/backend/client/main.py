@@ -16,7 +16,6 @@ def ruta_inicial():
 
 @app.route('/temperature', methods=['GET'])
 def get_temperature():
-    app.logger.info('Request temperatureeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
     if request.method == 'GET':
         client = DataClient()
         res = json.loads(MessageToJson(client.get_temperature()))
@@ -25,23 +24,30 @@ def get_temperature():
         return "error _temperature_"
 @app.route('/uf', methods=['GET'])
 def get_uf():
-    print("uf")
-    return
+    if request.method == 'GET':
+        client = DataClient()
+        res = json.loads(MessageToJson(client.get_uf()))
+        return jsonify(res)
+    else:
+        return "error _temperature_"
 
 @app.route('/dollar', methods=['GET'])
 def get_dollar():
-    print("dollar")
-    return
+    if request.method == 'GET':
+        client = DataClient()
+        res = json.loads(MessageToJson(client.get_dollar()))
+        return jsonify(res)
+    else:
+        return "error _dollar_"
 
 @app.route('/game', methods=['GET'])
-def game():
-    print("game")
-    return
-
-@app.route('/getAllData', methods=['GET'])
-def allData():
-    print("getAllData")
-    return
+def get_game():
+    if request.method == 'GET':
+        client = DataClient()
+        res = json.loads(MessageToJson(client.get_game()))
+        return jsonify(res)
+    else:
+        return "error _game_"
 
 
 #exportar dataclient y dataserver y con eso queda ready
@@ -54,7 +60,9 @@ class DataClient:
     def get_uf(self):
         return self.stub.GetUF(buffer_pb2.Empty())
     def get_dollar(self):
-        return self.stub.GetDollar(buffer_pb2.Empty())
+        return self.stub.GetDollar(buffer_pb2.Empty())    
+    def get_game(self):
+        return self.stub.GetGame(buffer_pb2.Empty())
 
 def main():
     app.run(host="0.0.0.0", port=5000, debug=True)

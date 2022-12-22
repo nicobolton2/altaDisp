@@ -20,6 +20,12 @@ message Dollar {
     string dollar = 2;
 }
 
+//Game
+message Game {
+    string id = 1;
+    string game = 2;
+}
+
 // vacio
 message Empty {
 
@@ -35,4 +41,5 @@ service Servicer {
     rpc GetTemperature (Empty) returns (Temperature);
     rpc GetUF (Empty) returns (UF);
     rpc GetDollar (Empty) returns (Dollar);
+    rpc GetGame (Empty) returns (Game);
 }
