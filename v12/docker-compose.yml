@@ -1,0 +1,51 @@
+version: '3.3'
+
+services:
+  server:
+    container_name: server
+    build: ./backend/server
+    restart: always
+    ports:
+      - 50051:50051
+    volumes:
+      - ./backend/server:/server
+    depends_on:
+      - mongodb
+
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./frontend/src:/usr/share/nginx/html
+    depends_on:
+      - server
+      - client
+
+
+  client:
+    container_name: client
+    build: ./backend/client
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - ./backend/client:/client
+    depends_on:
+      - server
+
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    env_file:
+      - common.env
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/data:/data/db
+      - ./data/log:/data/log

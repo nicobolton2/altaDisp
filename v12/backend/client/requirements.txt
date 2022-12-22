@@ -1,0 +1,9 @@
+grpcio
+grpcio-tools
+Flask
+flask-cors
+itsdangerous
+Jinja2
+MarkupSafe
+requests
+SimpleJSON
